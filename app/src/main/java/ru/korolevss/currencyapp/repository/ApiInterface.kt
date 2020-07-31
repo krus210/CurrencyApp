@@ -8,5 +8,5 @@ import ru.korolevss.currencyapp.dto.ValCurs
 interface ApiInterface {
 
     @GET("daily.xml")
-    suspend fun getValCurs(): Call<ValCurs>
+    fun getValCurs(): Call<ValCurs>
 }

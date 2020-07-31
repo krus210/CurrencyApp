@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_1dp"
+    android:padding="@dimen/padding_10dp">
+
+    <ImageView
+        android:id="@+id/imageFlag"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_flag_of_europe"/>
+
+    <TextView
+        android:id="@+id/textCode"
+        style="@style/TextCode"
+        app:layout_constraintStart_toEndOf="@+id/imageFlag"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/eur"
+        android:layout_marginStart="@dimen/padding_10dp"/>
+
+    <TextView
+        android:id="@+id/textName"
+        style="@style/TextName"
+        android:layout_marginStart="@dimen/padding_10dp"
+        app:layout_constraintStart_toEndOf="@+id/imageFlag"
+        app:layout_constraintTop_toBottomOf="@+id/textCode"
+        tools:text="@string/euros" />
+
+    <TextView
+        android:id="@+id/textCurrency"
+        style="@style/TextCurrency"
+        app:layout_constraintBottom_toBottomOf="@+id/imageFlag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageFlag"
+        tools:text="@string/one" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1dp"
+        android:src="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/imageFlag"
+        android:layout_marginTop="@dimen/padding_10dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

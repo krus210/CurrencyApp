@@ -2,6 +2,7 @@
 
 package ru.korolevss.currencyapp.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.blongho.country_data.World
 import okhttp3.OkHttpClient
@@ -17,6 +18,7 @@ import ru.korolevss.currencyapp.R
 import ru.korolevss.currencyapp.Resource
 import ru.korolevss.currencyapp.dto.ValCurs
 import ru.korolevss.currencyapp.model.CurrencyItem
+import java.lang.Exception
 import java.math.BigDecimal
 import java.util.*
 
@@ -33,12 +35,12 @@ object NetworkService {
             .build()
     }
 
-    val api = retrofit.create(ApiInterface::class.java)
+    fun getApi() = retrofit.create(ApiInterface::class.java)
 
-    suspend fun getValutes(): MutableLiveData<Resource<List<CurrencyItem>>> {
+    fun getValutes(): MutableLiveData<Resource<List<CurrencyItem>>> {
         val mutableLiveData = MutableLiveData<Resource<List<CurrencyItem>>>()
         mutableLiveData.value = Resource.loading()
-        api
+        getApi()
             .getValCurs()
             .enqueue(object : Callback<ValCurs> {
                 override fun onResponse(call: Call<ValCurs>, response: Response<ValCurs>) {
@@ -49,6 +51,7 @@ object NetworkService {
                         mutableLiveData.value = Resource.success(getCurrencies(valCures!!))
                     }
                 }
+
                 override fun onFailure(call: Call<ValCurs>, t: Throwable) {
                     mutableLiveData.value = Resource.error(R.string.fail_loading_currencies)
                 }
@@ -59,32 +62,36 @@ object NetworkService {
     private fun getCurrencies(valCures: ValCurs): List<CurrencyItem> {
         World.init(App.context)
         val usdValute = valCures.valutes?.first { it.charCode == "USD" }!!
-        val allCurrencies = World.getAllCurrencies()
         val usdCurrency = CurrencyItem(
             code = usdValute.charCode!!,
-            name = allCurrencies.first { it.code == usdValute.charCode }.name,
+            name = Currency.getInstance("USD").displayName,
             flagResource = World.getFlagOf(usdValute.numCode!!.toInt()),
-            nominal = BigDecimal(1.0),
-            value = BigDecimal(1.0)
+            nominal = BigDecimal.valueOf(1.0),
+            value = BigDecimal.valueOf(1.0)
         )
         val currencyRatio =
-            BigDecimal(usdValute.nominal!!).div(BigDecimal(usdValute.value!!.toDouble()))
+            BigDecimal.valueOf(usdValute.value!!.replace(',', '.').toDouble()).div(
+                BigDecimal.valueOf(usdValute.nominal!!.toDouble())
+            )
         val currencies = mutableListOf(usdCurrency)
         valCures.valutes!!.forEach {
             if (it.charCode != "USD") {
-                currencies.add(
-                    CurrencyItem(
-                        code = it.charCode!!,
-                        name = allCurrencies.first { it1 -> it1.code == it.charCode }.name,
-                        flagResource = World.getFlagOf(it.numCode!!.toInt()),
-                        nominal = BigDecimal(1.0),
-                        value = BigDecimal(it.value!!.toDouble())
-                            .div(BigDecimal(it.nominal!!.toDouble()))
-                            .multiply(currencyRatio)
-                    )
+                val currencyItem = CurrencyItem(
+                    code = it.charCode!!,
+                    name = Currency.getInstance(it.charCode).displayName,
+                    flagResource = World.getFlagOf(it.numCode!!.toInt()),
+                    nominal = BigDecimal.valueOf(1.0),
+                    value = BigDecimal.valueOf(it.value!!.replace(',', '.').toDouble())
+                        .div(BigDecimal.valueOf(it.nominal!!.toDouble()))
+                        .div(currencyRatio)
                 )
+                currencies.add(currencyItem)
             }
         }
+        val indexOfEuro = currencies.indexOfFirst { it.code == "EUR" }
+        val copyOfEuro = currencies[indexOfEuro]
+            .copy(flagResource = R.drawable.ic_flag_of_europe)
+        currencies[indexOfEuro] = copyOfEuro
         return currencies
     }
 

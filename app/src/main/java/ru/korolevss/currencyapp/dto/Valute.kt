@@ -5,7 +5,7 @@ import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root
 
 @Root(strict = false, name = "Valute")
-data class Valute(
+data class Valute @JvmOverloads constructor(
     @field:Attribute(name = "ID") var id: String? = null,
     @field:Element(name = "NumCode") var numCode: String? = null,
     @field:Element(name = "CharCode") var charCode: String? = null,

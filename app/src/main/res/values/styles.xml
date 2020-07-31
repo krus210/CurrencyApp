@@ -7,4 +7,25 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextCode">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/code_text_size</item>
+        <item name="android:textColor">@color/colorGrey</item>
+    </style>
+
+    <style name="TextName">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/name_text_size</item>
+        <item name="android:textColor">@color/colorWhiteGrey</item>
+    </style>
+
+    <style name="TextCurrency">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/currency_text_size</item>
+        <item name="android:textColor">@color/colorWhiteGrey</item>
+    </style>
+
 </resources>
