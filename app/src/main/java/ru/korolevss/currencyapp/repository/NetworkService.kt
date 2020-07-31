@@ -49,6 +49,7 @@ object NetworkService {
                         mutableLiveData.value = Resource.error(R.string.empty_list_of_currencies)
                     } else {
                         mutableLiveData.value = Resource.success(getCurrencies(valCures!!))
+                        Log.d("Currency", "${mutableLiveData.value?.data}")
                     }
                 }
 
@@ -66,13 +67,11 @@ object NetworkService {
             code = usdValute.charCode!!,
             name = Currency.getInstance("USD").displayName,
             flagResource = World.getFlagOf(usdValute.numCode!!.toInt()),
-            nominal = BigDecimal.valueOf(1.0),
-            value = BigDecimal.valueOf(1.0)
+            nominal = 1.0,
+            value = 1.0
         )
         val currencyRatio =
-            BigDecimal.valueOf(usdValute.value!!.replace(',', '.').toDouble()).div(
-                BigDecimal.valueOf(usdValute.nominal!!.toDouble())
-            )
+            usdValute.value!!.replace(',', '.').toDouble() / usdValute.nominal!!.toDouble()
         val currencies = mutableListOf(usdCurrency)
         valCures.valutes!!.forEach {
             if (it.charCode != "USD") {
@@ -80,10 +79,9 @@ object NetworkService {
                     code = it.charCode!!,
                     name = Currency.getInstance(it.charCode).displayName,
                     flagResource = World.getFlagOf(it.numCode!!.toInt()),
-                    nominal = BigDecimal.valueOf(1.0),
-                    value = BigDecimal.valueOf(it.value!!.replace(',', '.').toDouble())
-                        .div(BigDecimal.valueOf(it.nominal!!.toDouble()))
-                        .div(currencyRatio)
+                    nominal = 1.0,
+                    value = currencyRatio / (it.value!!.replace(',', '.')
+                        .toDouble() / it.nominal!!.toDouble())
                 )
                 currencies.add(currencyItem)
             }

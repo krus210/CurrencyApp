@@ -6,6 +6,6 @@ data class CurrencyItem(
     val code: String,
     val name: String,
     val flagResource: Int,
-    val nominal: BigDecimal,
-    val value: BigDecimal
+    val nominal: Double,
+    val value: Double
 )

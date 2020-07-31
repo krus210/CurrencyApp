@@ -16,10 +16,6 @@ class CurrencyModel : ViewModel() {
     private var currencies = MutableLiveData<Resource<List<CurrencyItem>>>()
 
     init {
-        getCurrenciesFromServer()
-    }
-
-    fun getCurrenciesFromServer() {
         try {
             currencies = NetworkService.getValutes()
         } catch (e: Exception) {
@@ -33,15 +29,15 @@ class CurrencyModel : ViewModel() {
         val oldCurrencies = currencies.value!!.data!!
         val mainCurrency =
             oldCurrencies[position].copy(
-                nominal = BigDecimal.valueOf(1.0),
-                value = BigDecimal.valueOf(1.0)
+                nominal = 1.0,
+                value = 1.0
             )
-        val ratio = oldCurrencies[position].value.divide(oldCurrencies[position].nominal)
+        val ratio =  oldCurrencies[position].nominal / oldCurrencies[position].value
         val newCurrencies = mutableListOf(mainCurrency)
         oldCurrencies.forEach {
             if ( it.code != mainCurrency.code) {
                 newCurrencies.add(it.copy(
-                    value = it.value.div(it.nominal).div(ratio)
+                    value = ratio * ( it.value / it.nominal )
                 ))
             }
         }

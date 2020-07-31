@@ -1,10 +1,16 @@
 package ru.korolevss.currencyapp.adapter
 
+import android.graphics.Color
+import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextPaint
+import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_card.view.*
+import ru.korolevss.currencyapp.R
 import ru.korolevss.currencyapp.model.CurrencyItem
 import java.text.DecimalFormat
 
