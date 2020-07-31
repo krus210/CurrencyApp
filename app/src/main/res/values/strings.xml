@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Currency App</string>
+    <string name="fail_loading_currencies">Fail to loading currencies, try else</string>
+    <string name="empty_list_of_currencies">Empty list of currencies</string>
+</resources>
